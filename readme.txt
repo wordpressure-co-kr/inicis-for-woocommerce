@@ -8,12 +8,12 @@ Stable tag: 1.0.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-엠샵에서 개발한 KG 이니시스의 워드프레스 우커머스 이용을 위한 결제 시스템 플러그인 입니다.
+코드엠샵에서 개발한 KG 이니시스의 워드프레스 우커머스 이용을 위한 결제 시스템 플러그인 입니다.
 
 == Description ==
 
-워드프레스 쇼핑몰 우커머스에 사용이 가능한 결제 플러그인 입니다.
-"INICIS – for WooCommerce" plugin is available for Wordpress's 'WooCommerce' Plugin .
+워드프레스 쇼핑몰 우커머스 2.1.x 버전에서 사용이 가능한 대한민국 결제 플러그인 입니다.
+"INICIS for WooCommerce" plugin is available only for South Korea Wordpress Users using 'WooCommerce 2.1.x' Plugin.
 
 
 = 결제 지원 범위(Support Features) =
@@ -49,6 +49,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 * MySQL 5.0 또는 최신 버전 (MySQL 5.0 or later)
 * 방화벽 설정 확인 (Check Firewall Setting Manual Provided By KG INICIS ) 
 
+
 = 수동 설치 방법(Manually Install) =
 
 수동으로 설치할 경우에는 플러그인을 다운로드 받아서 웹서버에 원하는 FTP 프로그램을 이용해서 플러그인을 업로드하여 설치하시면 됩니다.
@@ -58,6 +59,12 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 * FTP 프로그램을 이용하거나, 호스팅의 관리페이지 또는 플러그인 업로드 페이지를 이용해서 워드프레스가 설치된 경로의 하위에 /wp-content/plugins/ 디렉토리안에 압축을 푼 파일을 업로드 합니다.
 (Using an FTP program, or your hosting control panel, upload the unzipped plugin folder to your WordPress installation’s wp-content/plugins/ directory.)
 * 워드프레스 관리자 페이지 플러그인 메뉴에서 해당 플러그인을 활성화 시킵니다.(Activate the plugin from the Plugins Panel within the WordPress admin.) 
+
+
+= 플러그인 사용 방법(How to use Plugin) =
+
+플러그인 사용 방법에 대한 자세한 정보는 플러그인 파일에 포함된 문서파일을 참고해 주세요.
+For detailed information please do go through document folder under plugin directory.
 
 == Upgrade Notice ==
 
@@ -81,9 +88,8 @@ PHP 확장은 결제 서비스를 사용하는데 필요한 필수 요소입니�
  This means PHP extension is required to use payment services.So Please contact to your hosting service provider and ask him to configure the environment.)
 
 * 잘 이해가 되지 않습니다. 도움을 요청할수 있을까요?
-잘 모르는 부분이 있으시다면, support@codemstory.com 으로 이메일을 주시거나, 이곳 Support 탭 또는 http://inicis.codemshop.com 사이트에 있는 게시판에 글을 남겨주시기 바랍니다. 
-(For any other queries.
-you may contact to us by sending email to support@codemstory.com or feel free to write to us on  http://inicis.codemshop.com website or Wordpress.org Plugin Directory under Support tab. )
+잘 모르는 부분이 있으시다면, 이 곳 Support 탭 또는 워드프레스 플러그인 사이트에 있는 Support에 글을 남겨주시거나, support@codemstory.com 으로 이메일을 주시기 바랍니다.
+(For any other queries. you may contact to us by sending email to support@codemstory.com or feel free to write to us on website Wordpress.org Plugin Directory under Support tab. )
 
 == Screenshots ==
 
