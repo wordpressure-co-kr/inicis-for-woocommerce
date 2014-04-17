@@ -1,0 +1,37 @@
+/********************************************
+ * INICIS - for WooCommerce, with CODEM(c)
+ * CSS File
+ ********************************************/
+
+.forminp fieldset { 
+	margin-bottom:15px;
+	margin-top:10px;
+}
+
+input[name='btn_inicis_link'],
+input[name='btn_inicis_link2'] { 
+	cursor:pointer;
+}
+
+#banner1,
+#banner2,
+#banner3,{ 
+	margin-right:10px;
+	margin-bottom:5px;
+	cursor:pointer;
+	width:20%;
+} 
+
+.mobile_paymethod_p {
+	margin:0px !important;
+}
+
+.mobile_paymethod_p_blue {
+	color:blue;
+}
+
+input[name='paymethodtype'] { 
+	margin:2px 5px 0px 0px;
+	padding:0px;
+	vertical-align:text-bottom;
+}
