@@ -1,9 +1,9 @@
 === INICIS for WooCommerce ===
 Contributors: CODEM(c), CodeMShop, MShop, Inicis
 Donate link: http://www.codemshop.com 
-Tags: WooCommerce, eCommerce, Inicis, Payment, Gateway, PG, KG, KGINICIS, wordpress, MShop, CodeMStory, CodeMShop, CODEM(c), 이니시스, 우커머스, 결제, 코드엠, 엠샵
+Tags: WooCommerce, eCommerce, Inicis, Payment, Gateway, PG, KG, KGINICIS, KG INICIS INIPAY, Payment plugin, South Korea PG Plugin, wordpress, MShop, CodeMStory, CodeMShop, CODEM(c), 이니시스, 우커머스, 결제, 코드엠, 엠샵, 우커머스 결제 플러그인, 플러그인, 이니시스 결제, 이니페이, 쇼핑몰 결제  
 Requires at least: 3.8.1
-Tested up to: 3.8.1
+Tested up to: 3.9
 Stable tag: 1.0.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -34,10 +34,16 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 = 온라인 결제를 위한 KG 이니시스 서비스 신청 안내(KG Inicis Services Application Guide) = 
 * 사업자 확인 및 카드사 심사를 위해 이니시스 결제 서비스 신청 후 정상적인 서비스를 이용하실 수 있습니다.
  (To use this plugin service properly you must gone through business License Number Check by signing up with INICIS Service and also Credit Card Companies Settlement Examination. )
+
+  이니시스 온라인 가입 신청 : http://j.mp/plugin_inicis
   
+  **주의 : 플러그인에 맞는 이니시스의 상점 키값을 발급 받기 위해서는 코드엠에서 제공하는 온라인 가입 신청 페이지에 신청하셔야만 이용이 가능합니다.**
+ 
 * PG 서비스 상세 이용 설명(For Detailed description of the PG service please go through) : http://www.inicis.com/, http://www.inicis.com/eng/
 
-* PG 서비스 신청 지원(PG Service Application Support) : http://www.codemshop.com
+* PG 서비스 신청 지원(PG Service Application Support) : http://www.wordpressshop.co.kr
+
+INICIS for WooCommerce Plugin 의 개발 저작권은 주식회사 코드엠에 있습니다.
 
 == Installation ==
 
