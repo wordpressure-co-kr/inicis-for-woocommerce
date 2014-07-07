@@ -4,7 +4,7 @@ Donate link: http://www.codemshop.com
 Tags: WooCommerce, eCommerce, Inicis, Payment, Gateway, PG, KG, KGINICIS, KG INICIS INIPAY, Payment plugin, South Korea PG Plugin, wordpress, MShop, CodeMStory, CodeMShop, CODEM(c), 이니시스, 우커머스, 결제, 코드엠, 엠샵, 우커머스 결제 플러그인, 플러그인, 이니시스 결제, 이니페이, 쇼핑몰 결제  
 Requires at least: 3.8.1
 Tested up to: 3.9
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -106,6 +106,11 @@ PHP 확장은 결제 서비스를 사용하는데 필요한 필수 요소입니�
 5. 모바일/스마트폰 결제 동작 화면 / Mobile Payment Working Screen
 
 == Changelog ==
+
+= 1.0.4 - 2014/07/07 =
+
+* 모바일 결제시 ISP 처리 관련 문제 해결
+  Mobile Checkout Process Bug Fix about ISP paymethod.
 
 = 1.0.3 - 2014/04/05 =
 
