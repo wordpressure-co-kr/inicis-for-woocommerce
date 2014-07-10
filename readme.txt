@@ -107,10 +107,15 @@ PHP 확장은 결제 서비스를 사용하는데 필요한 필수 요소입니�
 
 == Changelog ==
 
+= 1.0.5 - 2014/07/10 =
+
+* 관리자 주문 환불 처리 수정
+  Admin Order Refund Process Fix.
+
 = 1.0.4 - 2014/07/07 =
 
-* 모바일 결제시 ISP 처리 관련 문제 해결
-  Mobile Checkout Process Bug Fix about ISP paymethod.
+* 모바일 결제시 ISP 처리 수정
+  Mobile Checkout Process Fix about ISP paymethod.
 
 = 1.0.3 - 2014/04/05 =
 
