@@ -3,7 +3,7 @@
 Plugin Name: INICIS for WooCommerce
 Plugin URI: http://www.codemshop.com
 Description: 엠샵에서 개발한 KG 이니시스의 워드프레스 우커머스 이용을 위한 결제 시스템 플러그인 입니다. KG INICIS Payment Gateway Plugin for Wordpress WooCommerce that developed by MShop.
-Version: 1.0.4
+Version: 1.0.5
 Author: CODEM(c)
 Author URI: http://www.codemshop.com
 */
@@ -92,14 +92,14 @@ function ajax_codem_order_cancelled_callback(){
         $rst = cancel_request_process($_POST['post_id']);
         if($rst == "true") {
             update_post_meta($_POST['post_id'], '_codem_inicis_order_cancelled', TRUE);
-            echo TRUE;
+            echo '1';
             exit;
         } else {
-            echo FALSE;
+            echo '0';
             exit;
         }
     } else {
-        echo FALSE;
+        echo '0';
         exit;
     }
 }
@@ -179,8 +179,8 @@ function metabox_refund_request($post){
             jQuery.post(ajaxurl, data, function(response) {
                 if( response == "1") {
                     alert("'.__('환불 처리가 완료되었습니다!','codem_inicis').'");
-                    location.href="'.admin_url('post.php?post='.$post->ID.'&action=edit').'";    
-                } else {
+                    location.href="'.admin_url('post.php?post='.$post->ID.'&action=edit').'";
+				} else {
                     alert("'.__('환불 처리가 실패되었습니다!\n\n다시 시도해 주세요!\n\n계속 동일 증상 발생시 주문상태를 확인해주세요!','codem_inicis').'");
                     jQuery("[name=\'refund-request\']").removeAttr("disabled");
                     jQuery("[name=\'refund-request\']").attr(\'value\',"'.__('주문 환불하기','codem_inicis').'");
@@ -429,24 +429,24 @@ function send_pg_cancel_request($mid, $tid, $msg, $code="1"){
 	} else {
 		return;
 	}
+	
+	$response = wp_remote_post( $http_url, array(
+		'method' => 'POST',
+		'timeout' => 45,
+		'redirection' => 5,
+		'httpversion' => '1.0',
+		'blocking' => true,
+		'headers' => array(),
+		'body' => array( 'mid' => $mid, 'tid' => $tid, 'msg' => $msg, 'code' => $code, 'home' => $home ),
+		'cookies' => array()
+	    )
+	);
     
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $http_url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept-Language: ko"));
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,  array('mid' => $mid, 'tid' => $tid, 'msg' => $msg, 'code' => $code, 'home' => $home ) );
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-    
-    $httpResponse = trim(curl_exec($ch));
-	if($httpResponse == "success") {
+	if( strpos($response['body'], 'success') !== false ){
 		return "true";	
 	} else {
-        return trim($httpResponse);
+        return trim($result_data);
 	}
-    curl_close($ch);
 }
 
 /**
@@ -1396,10 +1396,10 @@ function woocommerce_inicis_pg_init(){
 			$inipay->startAction();
 		    
 			if($inipay->getResult('ResultCode') == "00"){
-				echo "success";
+				echo 'success';
 				exit();
 			}else{
-                echo $inipay->getResult('ResultMsg');
+				echo $inipay->getResult('ResultMsg');
 				exit();
 			}
 		}
@@ -2651,7 +2651,7 @@ function woocommerce_inicis_pg_init(){
         function check_inicis_response(){
             if(!empty($_REQUEST)) { 
                 //결제처리시 필요한 데이터가 넘어온 경우
-                header( 'HTTP/1.1 200 OK' );
+                //header( 'HTTP/1.1 200 OK' );
                 
                 //결제처리 타입에 따른 분기처리
                 if(!empty($_REQUEST['type'])){
