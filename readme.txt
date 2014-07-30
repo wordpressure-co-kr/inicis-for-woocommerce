@@ -1,25 +1,23 @@
 === INICIS for WooCommerce ===
 Contributors: CODEM(c), CodeMShop, MShop, Inicis
 Donate link: http://www.codemshop.com 
-Tags: WooCommerce, eCommerce, Inicis, Payment, Gateway, PG, KG, KGINICIS, KG INICIS INIPAY, Payment plugin, South Korea PG Plugin, wordpress, MShop, CodeMStory, CodeMShop, CODEM(c), 이니시스, 우커머스, 결제, 코드엠, 엠샵, 우커머스 결제 플러그인, 플러그인, 이니시스 결제, 이니페이, 쇼핑몰 결제  
-Requires at least: 3.8.1
-Tested up to: 3.9
-Stable tag: 1.0.4
+Tags: WooCommerce, eCommerce, Inicis, Payment, Gateway, PG, KG, KGINICIS, wordpress, MShop, CodeMStory, CodeMShop, CODEM(c), 이니시스, 우커머스, 결제, 코드엠, 엠샵
+Requires at least: 3.9.1
+Tested up to: 3.9.1
+Stable tag: 2.0.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-코드엠샵에서 개발한 KG 이니시스의 워드프레스 우커머스 이용을 위한 결제 시스템 플러그인 입니다.
+엠샵에서 개발한 KG 이니시스의 워드프레스 우커머스 이용을 위한 결제 시스템 플러그인 입니다.
 
 == Description ==
 
-워드프레스 쇼핑몰 우커머스 2.1.x 버전에서 사용이 가능한 대한민국 결제 플러그인 입니다.
-"INICIS for WooCommerce" plugin is available only for South Korea Wordpress Users using 'WooCommerce 2.1.x' Plugin.
-
+워드프레스 쇼핑몰 우커머스에 사용이 가능한 결제 플러그인 입니다.
+"INICIS – for WooCommerce" plugin is available for Wordpress's 'WooCommerce' Plugin .
 
 = 결제 지원 범위(Support Features) =
 * PC Desktop : 신용카드(Credit Card), 은행 계좌이체(Direct Bank Transfer)
-* Mobile(Smart Phone) : 신용카드(Credit Card)
-* 결제 통화 선택(Option To Set Currency)
+* Mobile(Smart Phone) : 신용카드(Credit Card), 은행 계좌이체(Direct Bank Transfer)
 * 카드 포인트 사용(Option To Use Credit Card Point)
 * PG 플러그인 스킨 색상 지정(Setting For Changing Skin Color of Payment Gateway Program)
 * 할부 개월수 지정(Option To Select Installments)
@@ -34,27 +32,20 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 = 온라인 결제를 위한 KG 이니시스 서비스 신청 안내(KG Inicis Services Application Guide) = 
 * 사업자 확인 및 카드사 심사를 위해 이니시스 결제 서비스 신청 후 정상적인 서비스를 이용하실 수 있습니다.
  (To use this plugin service properly you must gone through business License Number Check by signing up with INICIS Service and also Credit Card Companies Settlement Examination. )
-
-  이니시스 온라인 가입 신청 : http://j.mp/plugin_inicis
   
-  **주의 : 플러그인에 맞는 이니시스의 상점 키값을 발급 받기 위해서는 코드엠에서 제공하는 온라인 가입 신청 페이지에 신청하셔야만 이용이 가능합니다.**
- 
 * PG 서비스 상세 이용 설명(For Detailed description of the PG service please go through) : http://www.inicis.com/, http://www.inicis.com/eng/
 
-* PG 서비스 신청 지원(PG Service Application Support) : http://www.wordpressshop.co.kr
-
-INICIS for WooCommerce Plugin 의 개발 저작권은 주식회사 코드엠에 있습니다.
+* PG 서비스 신청 지원(PG Service Application Support) : http://www.codemshop.com
 
 == Installation ==
 
 = 사용 가능 환경(Requirements) =
 
-* 워드프레스 3.8 또는 최신 버전 (Wordpress 3.8 or later)
+* 워드프레스 3.9.1 또는 최신 버전 (Wordpress 3.9.1 or later)
 * PHP 5.2.4 또는 최신 버전 (PHP 5.2.4 or later)
-* PHP 확장(Extension): OpenSSL, LibXML, mcrypt, socket, Curl 설치필요 (--with-openssl, --with-mcrypt, --enable-sockets, --with-curl)
+* PHP 확장(Extension): OpenSSL, LibXML, mcrypt, socket 설치필요 (--with-openssl, --with-mcrypt, --enable-sockets)
 * MySQL 5.0 또는 최신 버전 (MySQL 5.0 or later)
 * 방화벽 설정 확인 (Check Firewall Setting Manual Provided By KG INICIS ) 
-
 
 = 수동 설치 방법(Manually Install) =
 
@@ -65,16 +56,6 @@ INICIS for WooCommerce Plugin 의 개발 저작권은 주식회사 코드엠에 
 * FTP 프로그램을 이용하거나, 호스팅의 관리페이지 또는 플러그인 업로드 페이지를 이용해서 워드프레스가 설치된 경로의 하위에 /wp-content/plugins/ 디렉토리안에 압축을 푼 파일을 업로드 합니다.
 (Using an FTP program, or your hosting control panel, upload the unzipped plugin folder to your WordPress installation’s wp-content/plugins/ directory.)
 * 워드프레스 관리자 페이지 플러그인 메뉴에서 해당 플러그인을 활성화 시킵니다.(Activate the plugin from the Plugins Panel within the WordPress admin.) 
-
-
-= 플러그인 사용 방법(How to use Plugin) =
-
-플러그인 사용 방법에 대한 자세한 정보는 플러그인 파일에 포함된 문서파일을 참고해 주세요.
-For detailed information please do go through document folder under plugin directory.
-
-== Upgrade Notice ==
-
-* 내용 없음(Nothing)
 
 == Frequently Asked Questions ==
 
@@ -94,8 +75,9 @@ PHP 확장은 결제 서비스를 사용하는데 필요한 필수 요소입니�
  This means PHP extension is required to use payment services.So Please contact to your hosting service provider and ask him to configure the environment.)
 
 * 잘 이해가 되지 않습니다. 도움을 요청할수 있을까요?
-잘 모르는 부분이 있으시다면, 이 곳 Support 탭 또는 워드프레스 플러그인 사이트에 있는 Support에 글을 남겨주시거나, support@codemstory.com 으로 이메일을 주시기 바랍니다.
-(For any other queries. you may contact to us by sending email to support@codemstory.com or feel free to write to us on website Wordpress.org Plugin Directory under Support tab. )
+잘 모르는 부분이 있으시다면, support@codemstory.com 으로 이메일을 주시거나, 이곳 Support 탭 또는 http://inicis.codemshop.com 사이트에 있는 게시판에 글을 남겨주시기 바랍니다. 
+(For any other queries.
+you may contact to us by sending email to support@codemstory.com or feel free to write to us on  http://inicis.codemshop.com website or Wordpress.org Plugin Directory under Support tab. )
 
 == Screenshots ==
 
@@ -107,15 +89,33 @@ PHP 확장은 결제 서비스를 사용하는데 필요한 필수 요소입니�
 
 == Changelog ==
 
+= 2.0.0 - 2014/07/30 =
+
+* 소스 구조 변경
+  Source Structure Change.
+* 모바일 결제 처리 변경
+  Mobile Payment Process Fix.
+* 결제 페이지에서 결제 가능
+  Possible Payment Process to Checkout page.
+* 관리자 화면 구성 변경
+  Change Payment Option Manage page.
+* 상점 키파일 업로드 기능 추가
+  Possible to Shopping Mall Keyfile Upload at Payment Option Manage page.
+* 대기시간 초과 상품 처리 추가
+  Add Timeout Waiting Order Process.    
+
+
 = 1.0.5 - 2014/07/10 =
 
 * 관리자 주문 환불 처리 수정
   Admin Order Refund Process Fix.
 
+
 = 1.0.4 - 2014/07/07 =
 
 * 모바일 결제시 ISP 처리 수정
   Mobile Checkout Process Fix about ISP paymethod.
+
 
 = 1.0.3 - 2014/04/05 =
 
@@ -126,10 +126,12 @@ PHP 확장은 결제 서비스를 사용하는데 필요한 필수 요소입니�
 * 결제 플러그인 파일명과 폴더명 변경
   Plugin Filename and Folder Name Change.
 
+
 = 1.0.2 - 2014/03/12 =
 
 * IE8에서 스크립트 오류 수정
   IE8 Javascript Bug Fix.
+
 
 = 1.0.1 - 2014/02/17 =
 
@@ -148,3 +150,10 @@ PHP 확장은 결제 서비스를 사용하는데 필요한 필수 요소입니�
 = 1.0.0 - 2014/01/10 =
 
 * 최초 버전 릴리즈. (First version Release)
+
+== Upgrade Notice ==
+
+= 2.0.0 =
+주의사항! 1.0.x 버전 사용자 분들은 업그레이드시에 키파일과 로그파일들이 삭제되오니 필히 백업 후에 업데이트를 진행하시기 바랍니다. 
+Warning! 1.0.x Version Users, please backup keyfile and log files before update. because, if you keep going update, it remove inside keyfile and log files.
+
