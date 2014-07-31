@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Inicis-for-Woocommerce\n"
 "POT-Creation-Date: 2014-07-29 10:56+0900\n"
-"PO-Revision-Date: 2014-07-29 14:28+0900\n"
+"PO-Revision-Date: 2014-07-31 10:10+0900\n"
 "Last-Translator: MShop <shop@codemstory.com>\n"
 "Language-Team: CodeM(c) <shop@codemstory.com>\n"
 "Language: ko_KR\n"
@@ -228,11 +228,11 @@ msgstr ""
 
 #: /Applications/XAMPP/xamppfiles/htdocs/wordpress/wp-content/plugins/inicis-for-woocommerce/classes/class-wc-inicis-payment.php:212
 msgid "Select all"
-msgstr ""
+msgstr "전체선택"
 
 #: /Applications/XAMPP/xamppfiles/htdocs/wordpress/wp-content/plugins/inicis-for-woocommerce/classes/class-wc-inicis-payment.php:212
 msgid "Select none"
-msgstr ""
+msgstr "선택해제"
 
 #: /Applications/XAMPP/xamppfiles/htdocs/wordpress/wp-content/plugins/inicis-for-woocommerce/classes/class-wc-inicis-payment.php:249
 msgid "Upload/Select Logo"
