@@ -3,7 +3,7 @@
 Plugin Name: INICIS for WooCommerce
 Plugin URI: http://www.codemshop.com
 Description: 엠샵에서 개발한 KG 이니시스의 워드프레스 우커머스 이용을 위한 결제 시스템 플러그인 입니다. KG INICIS Payment Gateway Plugin for Wordpress WooCommerce that developed by MShop.
-Version: 2.0.0
+Version: 2.0.1
 Author: CODEM(c)
 Author URI: http://www.codemshop.com
 */
@@ -20,7 +20,7 @@ if ( ! class_exists( 'INICIS_Payment_Gateway' ) ) {
         /**
          * @var string
          */
-        public $version = '2.0.0';
+        public $version = '2.0.1';
     
         /**
          * @var string
@@ -34,8 +34,6 @@ if ( ! class_exists( 'INICIS_Payment_Gateway' ) ) {
     
         private $_body_classes = array();
         
-        protected $update_checker;
-        
         /**
          * MShop Constructor.
          *
@@ -43,15 +41,12 @@ if ( ! class_exists( 'INICIS_Payment_Gateway' ) ) {
          * @return void
          */
         public function __construct() {
-            define( 'INICIS_PAYMENT_VERSION', $this->version );
-			
-            $this->slug = 'inicis-for-woocommerce';
-            $this->init_update();
             $this->load_plugin_textdomain();
+            
             add_action( 'init', array( $this, 'init' ), 0 );
             add_action( 'init', array( $this, 'output_buffer' ), 0 );
-			add_action( 'wp_head', array( $this, 'inicis_mypage_cancel_order' ), 0 );			
-    		add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
+            add_action( 'wp_head', array( $this, 'inicis_mypage_cancel_order' ), 0 );           
+            add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 
             register_activation_hook( __FILE__, array( $this, 'activation_process' ) );
             register_deactivation_hook( __FILE__, array( $this, 'deactivation_process' ) );
@@ -65,14 +60,8 @@ if ( ! class_exists( 'INICIS_Payment_Gateway' ) ) {
                 mkdir( WP_CONTENT_DIR . '/inicis', 0755, true );
                 umask($old);
 
-                $unzipfile = unzip_file( plugin_dir_path(__FILE__) . '/lib/inicis.zip', WP_CONTENT_DIR );
-                   
-                if ( is_wp_error($unzipfile) ) {
-                    wp_die( $unzipfile->get_error_message() );                     
-                } else {
-                    if ( !$unzipfile )  {
-                        wp_die( __('Inicis Library File Unzip Error', 'inicis_payment') );    
-                    }
+                if ( !file_exists( WP_CONTENT_DIR . '/lib' ) ) {
+                    rename( plugin_dir_path(__FILE__) . '/lib/', WP_CONTENT_DIR . '/inicis' );
                 }
             }
             update_option('ifw_ver', $this->version);
@@ -85,30 +74,21 @@ if ( ! class_exists( 'INICIS_Payment_Gateway' ) ) {
             delete_option( 'ifw_ver' );
         }
         
-		function plugins_loaded() {
-			
-			$payment_method_list = array( 'card', 'bank' );
+        function plugins_loaded() {
+            
+            $payment_method_list = array( 'card', 'bank' );
 
-			include_once( 'classes/class-wc-inicis-payment.php' );
-			
-			foreach( $payment_method_list as $type ) {
-				include_once( 'classes/class-wc-inicis-payment-'.$type.'.php' );
-			}
-		}
-		
+            include_once( 'classes/class-wc-inicis-payment.php' );
+            
+            foreach( $payment_method_list as $type ) {
+                include_once( 'classes/class-wc-inicis-payment-'.$type.'.php' );
+            }
+        }
+        
         function output_buffer() {
             ob_start();
         }       
         
-        function init_update() {
-            require 'admin/update/plugin-updates/plugin-update-checker.php';
-            $this->update_checker = PucFactory::buildUpdateChecker(
-                'http://update.codemshop.com/' . $this->slug . '/' . $this->slug . '.json',
-                __FILE__,
-                $this->slug
-            );
-        }
-            
         public function plugin_url() {
             if ( $this->plugin_url ) 
                 return $this->plugin_url;
@@ -137,40 +117,40 @@ if ( ! class_exists( 'INICIS_Payment_Gateway' ) ) {
         }
     
         public function admin_includes() {
-        	global $inicis_payment;
-        	wp_enqueue_script( 'media-upload' );
-			wp_enqueue_script( 'thickbox' );
+            global $inicis_payment;
+            wp_enqueue_script( 'media-upload' );
+            wp_enqueue_script( 'thickbox' );
 
-			wp_register_script( 'ifw-upload', $inicis_payment->plugin_url() . '/assets/js/ifw_admin_upload.js', array( 'jquery', 'media-upload', 'thickbox' ) );
-			wp_enqueue_script( 'ifw-upload' );
-			wp_enqueue_style( 'thickbox' );	
-				
-        	include_once('admin/class-ifw-admin-meta-boxes.php');
+            wp_register_script( 'ifw-upload', $inicis_payment->plugin_url() . '/assets/js/ifw_admin_upload.js', array( 'jquery', 'media-upload', 'thickbox' ) );
+            wp_enqueue_script( 'ifw-upload' );
+            wp_enqueue_style( 'thickbox' ); 
+                
+            include_once('admin/class-ifw-admin-meta-boxes.php');
         }
-		
+        
         public function ajax_includes() {
-        	
+            
         }
-		
+        
         public function frontend_includes() {
-        	
+            
         }
-		
+        
         public function frontend_scripts() {
-        	if( is_page( 'checkout' ) ) {
-	        	if(wp_is_mobile()){
-		            wp_register_script( 'ifw_payment-js', $this->plugin_url() . '/assets/js/ifw_payment.mobile.js' );
-	        	}else{
-		            wp_register_script( 'ifw_payment-js', $this->plugin_url() . '/assets/js/ifw_payment.js' );
-	        	}
-	            wp_enqueue_script( 'ifw_payment-js' );
-				wp_localize_script( 'ifw_payment-js', '_ifw_payment', array(
-		            'ajax_loader_url' =>  $this->plugin_url() . '/assets/images/ajax_loader.gif'
-	            ) );
+            if( is_page( 'checkout' ) ) {
+                if(wp_is_mobile()){
+                    wp_register_script( 'ifw_payment-js', $this->plugin_url() . '/assets/js/ifw_payment.mobile.js' );
+                }else{
+                    wp_register_script( 'ifw_payment-js', $this->plugin_url() . '/assets/js/ifw_payment.js' );
+                }
+                wp_enqueue_script( 'ifw_payment-js' );
+                wp_localize_script( 'ifw_payment-js', '_ifw_payment', array(
+                    'ajax_loader_url' =>  $this->plugin_url() . '/assets/images/ajax_loader.gif'
+                ) );
 
-	            wp_register_style( 'ifw-style', $this->plugin_url() . '/assets/css/style.min.css' );
-	            wp_enqueue_style( 'ifw-style' );
-        	}
+                wp_register_style( 'ifw-style', $this->plugin_url() . '/assets/css/style.min.css' );
+                wp_enqueue_style( 'ifw-style' );
+            }
         }
         
         public function init() {
@@ -178,82 +158,82 @@ if ( ! class_exists( 'INICIS_Payment_Gateway' ) ) {
     
             $this->includes();
             
-			add_action( 'wp_head', array( $this, 'inicis_ajaxurl') );
+            add_action( 'wp_head', array( $this, 'inicis_ajaxurl') );
             add_action( 'wp_enqueue_scripts', array( $this, 'frontend_scripts' ) );
-			add_filter( 'woocommerce_payment_gateways',  array( $this, 'woocommerce_payment_gateways' ) );
-			add_filter( 'woocommerce_pay_order_button_html', array($this, 'woocommerce_pay_order_button_html' ) );
-			add_filter( 'woocommerce_my_account_my_orders_actions', array( $this, 'woocommerce_my_account_my_orders_actions' ), 1, 2 );
+            add_filter( 'woocommerce_payment_gateways',  array( $this, 'woocommerce_payment_gateways' ) );
+            add_filter( 'woocommerce_pay_order_button_html', array($this, 'woocommerce_pay_order_button_html' ) );
+            add_filter( 'woocommerce_my_account_my_orders_actions', array( $this, 'woocommerce_my_account_my_orders_actions' ), 1, 2 );
         }
-		
-		public function woocommerce_my_account_my_orders_actions($actions, $order){
-			global $woocommerce;
-			$woocommerce->payment_gateways();
-			$payment_method = get_post_meta($order->id, '_payment_method', true);
-			return apply_filters('woocommerce_my_account_my_orders_actions_' . $payment_method, $actions, $order);
-		}
-		
-		function inicis_mypage_cancel_order(){
-        	if( is_page( 'checkout' ) ) {
-				$use_ssl = get_option('woocommerce_force_ssl_checkout');
-				if ($use_ssl == 'yes') {
-					$secunissl_cross = 'https://plugin.inicis.com/pay61_secunissl_cross.js';
-				} else {
-					$secunissl_cross = 'http://plugin.inicis.com/pay61_secuni_cross.js';
-				}
-				
-				echo '<script type="text/javascript" src="' . $secunissl_cross . '"></script>';
-        	}
-			
-			global $woocommerce;
-			if ( isset( $_GET['inicis-cancel-order'] ) && isset( $_GET['order'] ) && isset( $_GET['order_id'] ) ) {
-				$woocommerce->payment_gateways();
-				$payment_method = get_post_meta( $_GET['order_id'], '_payment_method', true );
-				do_action( 'inicis_mypage_cancel_order_' . $payment_method, $_GET['order_id'] );
-		        wp_redirect( get_permalink( wc_get_page_id( 'myaccount' ) ));
-				die();
-			}
-		}
+        
+        public function woocommerce_my_account_my_orders_actions($actions, $order){
+            global $woocommerce;
+            $woocommerce->payment_gateways();
+            $payment_method = get_post_meta($order->id, '_payment_method', true);
+            return apply_filters('woocommerce_my_account_my_orders_actions_' . $payment_method, $actions, $order);
+        }
+        
+        function inicis_mypage_cancel_order(){
+            if( is_page( 'checkout' ) ) {
+                $use_ssl = get_option('woocommerce_force_ssl_checkout');
+                if ($use_ssl == 'yes') {
+                    $secunissl_cross = 'https://plugin.inicis.com/pay61_secunissl_cross.js';
+                } else {
+                    $secunissl_cross = 'http://plugin.inicis.com/pay61_secuni_cross.js';
+                }
+                
+                echo '<script type="text/javascript" src="' . $secunissl_cross . '"></script>';
+            }
+            
+            global $woocommerce;
+            if ( isset( $_GET['inicis-cancel-order'] ) && isset( $_GET['order'] ) && isset( $_GET['order_id'] ) ) {
+                $woocommerce->payment_gateways();
+                $payment_method = get_post_meta( $_GET['order_id'], '_payment_method', true );
+                do_action( 'inicis_mypage_cancel_order_' . $payment_method, $_GET['order_id'] );
+                wp_redirect( get_permalink( wc_get_page_id( 'myaccount' ) ));
+                die();
+            }
+        }
 
-		function woocommerce_pay_order_button_html() {
-			$orderid = wc_get_order_id_by_order_key($_REQUEST['key']);
-			
-			if(wp_is_mobile()){
-				wp_register_script( 'ifw-pay-for-order', $this->plugin_url() . '/assets/js/ifw_pay_for_order.mobile.js' );
-        	}else{
-				wp_register_script( 'ifw-pay-for-order', $this->plugin_url() . '/assets/js/ifw_pay_for_order.js' );
-        	}
-			
-		    wp_enqueue_script( 'ifw-pay-for-order' );
-			wp_localize_script( 'ifw-pay-for-order', '_ifw_pay_for_order', array(
-				'ajax_loader_url' =>  $this->plugin_url() . '/assets/images/ajax_loader.gif',
-	            'order_id' => $orderid,
-	            'order_key' => $_REQUEST['key']
-	            ) );
+        function woocommerce_pay_order_button_html() {
+            $orderid = wc_get_order_id_by_order_key($_REQUEST['key']);
+            
+            if(wp_is_mobile()){
+                wp_register_script( 'ifw-pay-for-order', $this->plugin_url() . '/assets/js/ifw_pay_for_order.mobile.js' );
+            }else{
+                wp_register_script( 'ifw-pay-for-order', $this->plugin_url() . '/assets/js/ifw_pay_for_order.js' );
+            }
+            
+            wp_enqueue_script( 'ifw-pay-for-order' );
+            wp_localize_script( 'ifw-pay-for-order', '_ifw_pay_for_order', array(
+                'ajax_loader_url' =>  $this->plugin_url() . '/assets/images/ajax_loader.gif',
+                'order_id' => $orderid,
+                'order_key' => $_REQUEST['key']
+                ) );
 
-			$pay_order_button_text = apply_filters( 'woocommerce_pay_order_button_text', __( 'Pay for order', 'woocommerce' ) );
-			return '<input type="button" class="button alt" id="place_order" value="' . esc_attr( $pay_order_button_text ) . '" data-value="' . esc_attr( $pay_order_button_text ) . '" />';
-		}
-		
-		function inicis_ajaxurl() {
-			?>
-			<script type="text/javascript">
-			var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
-			</script>
-			<?php
-		}
-		
-	    function woocommerce_payment_gateways( $methods ) {
-			$payment_method_list = array( 'card', 'bank' );
+            $pay_order_button_text = apply_filters( 'woocommerce_pay_order_button_text', __( 'Pay for order', 'woocommerce' ) );
+            return '<input type="button" class="button alt" id="place_order" value="' . esc_attr( $pay_order_button_text ) . '" data-value="' . esc_attr( $pay_order_button_text ) . '" />';
+        }
+        
+        function inicis_ajaxurl() {
+            ?>
+            <script type="text/javascript">
+            var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+            </script>
+            <?php
+        }
+        
+        function woocommerce_payment_gateways( $methods ) {
+            $payment_method_list = array( 'card', 'bank' );
 
-			include_once( 'classes/class-wc-inicis-payment.php' );
-			
-			foreach( $payment_method_list as $type ) {
-				include_once( 'classes/class-wc-inicis-payment-'.$type.'.php' );
-		        $methods[] = 'WC_Gateway_Inicis_' . ucfirst( $type );
-			}
+            include_once( 'classes/class-wc-inicis-payment.php' );
+            
+            foreach( $payment_method_list as $type ) {
+                include_once( 'classes/class-wc-inicis-payment-'.$type.'.php' );
+                $methods[] = 'WC_Gateway_Inicis_' . ucfirst( $type );
+            }
 
-	        return $methods;
-	    }		
+            return $methods;
+        }       
             
         public function add_body_class( $class ) {
             $this->_body_classes[] = sanitize_html_class( strtolower($class) );
