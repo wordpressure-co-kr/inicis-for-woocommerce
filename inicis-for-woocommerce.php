@@ -60,7 +60,7 @@ if ( ! class_exists( 'INICIS_Payment_Gateway' ) ) {
                 mkdir( WP_CONTENT_DIR . '/inicis', 0755, true );
                 umask($old);
 
-                if ( !file_exists( WP_CONTENT_DIR . '/lib' ) ) {
+                if ( file_exists( plugin_dir_path(__FILE__) . '/lib' ) ) {
                     rename( plugin_dir_path(__FILE__) . '/lib/', WP_CONTENT_DIR . '/inicis' );
                 }
             }
