@@ -344,7 +344,7 @@ if( class_exists('WC_Payment_Gateway') ) {
         function check_mid($mid){
             if(!empty($mid)) {
                 $tmpmid = substr($mid, 0, 3);
-                if( !($tmpmid == base64_decode("SU5J") || $tmpmid == base64_decode("Q09E") || $mid == base64_decode("Y29kZW1zdG9yeQ==") ) )  {
+                if( !($tmpmid == base64_decode("SU5J") || $tmpmid == base64_decode("Q09E") || $tmpmid == base64_decode("Y29k") || $mid == base64_decode("Y29kZW1zdG9yeQ==") ) )  {
                     $tmparr = get_option('woocommerce_'.$this->id.'_settings');    
                     $tmparr['merchant_id'] = base64_decode('SU5JcGF5VGVzdA==');
                     $this->settings['merchant_id'] = base64_decode('SU5JcGF5VGVzdA==');
@@ -386,7 +386,13 @@ if( class_exists('WC_Payment_Gateway') ) {
         }
 
         public function admin_options() {
-            global $woocommerce;
+            global $woocommerce, $inicis_payment;
+            
+            wp_enqueue_script( 'media-upload' );
+            wp_enqueue_script( 'thickbox' );
+            wp_register_script( 'ifw-upload', $inicis_payment->plugin_url() . '/assets/js/ifw_admin_upload.js', array( 'jquery', 'media-upload', 'thickbox' ) );
+            wp_enqueue_script( 'ifw-upload' );
+            wp_enqueue_style( 'thickbox' ); 
             
             if ( isset( $this->method_description ) && $this->method_description != '' ) {
                 $tip = '<img class="help_tip" data-tip="' . esc_attr( $this->method_description ) . '" src="' . $woocommerce->plugin_url() . '/assets/images/help.png" height="16" width="16" />';
@@ -555,6 +561,7 @@ if( class_exists('WC_Payment_Gateway') ) {
 
         public function init_form_fields() {
             global $inicis_payment;
+            
             $this->form_fields = array(
                 'enabled' => array(
                     'title' => __('사용', 'inicis_payment'), 
@@ -655,7 +662,14 @@ if( class_exists('WC_Payment_Gateway') ) {
         }
 
         function get_keyfile_list() {
-            $dirs = glob(WP_CONTENT_DIR . '/inicis/key/*', GLOB_ONLYDIR);
+
+            if( empty( $this->settings['libfolder'] ) ) {
+                $library_path = WP_CONTENT_DIR . '/inicis';
+            } else {
+                $library_path = $this->settings['libfolder'];
+            }
+
+            $dirs = glob( $library_path . '/key/*', GLOB_ONLYDIR);
             if( count($dirs) > 0 ) {
                 $result = array();
                 foreach ($dirs as $val) {
