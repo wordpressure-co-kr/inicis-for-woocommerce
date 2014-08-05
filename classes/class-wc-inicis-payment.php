@@ -504,11 +504,13 @@ if( class_exists('WC_Payment_Gateway') ) {
         }   
 
         function generate_pg_notice(){
-            if($_GET['noti_close'] == '1') {
-                update_option('inicis_notice_close', '1');
-            } else if($_GET['noti_close'] == '0') {
-                update_option('inicis_notice_close', '0');
-            }   
+            if(isset($_GET['noti_close'])) {
+                if($_GET['noti_close'] == '1') {
+                    update_option('inicis_notice_close', '1');
+                } else if($_GET['noti_close'] == '0') {
+                    update_option('inicis_notice_close', '0');
+                }   
+            }    
         
             $css = '';
             if(get_option('inicis_notice_close') == '1') {
@@ -636,15 +638,6 @@ if( class_exists('WC_Payment_Gateway') ) {
                     'default' => 'cancelled',
                     'desc' => __('이니시스 플러그인을 통한 결제건에 한해서, 사용자의 환불처리가 승인된 경우 해당 주문의 상태를 지정하는 옵션입니다.','inicis_payment'),
                     ),                    
-                'redirect_page_id' => array(
-                    'title' => __('결제완료시 이동 페이지', 'inicis_payment'), 
-                    'class' => 'chosen_select',
-                    'type' => 'select', 
-                    'options' => $this->get_pages( __( '=== 선택하세요 ===', 'inicis_payment' ) ),
-                    'default' => get_option( 'woocommerce_myaccount_page_id', true ), 
-                    'description' => __( '결제 완료시 이동할 페이지를 지정해주세요.', 'inicis_payment' ), 
-                    'desc_tip' => true, 
-                    ), 
                 'logo_upload' => array(
                     'title' => __('결제 PG 로고', 'inicis_payment'), 
                     'type' => 'ifw_logo_upload', 
@@ -1239,26 +1232,6 @@ if( class_exists('WC_Payment_Gateway') ) {
 
             wp_send_json_success('<div data-id="mshop-payment-form" style="display:none">' . $form_tag . '</div>');
         }
-          
-        function get_pages($title = false, $indent = true) {
-            $wp_pages = get_pages('sort_column=menu_order');
-            $page_list = array();
-            if ($title)
-                $page_list[] = $title;
-            foreach ($wp_pages as $page) {
-                $prefix = '';
-                if ($indent) {
-                    $has_parent = $page->post_parent;
-                    while ($has_parent) {
-                        $prefix .= ' - ';
-                        $next_page = get_page($has_parent);
-                        $has_parent = $next_page->post_parent;
-                    }
-                }
-                $page_list[$page->ID] = $prefix . $page->post_title;
-            }
-            return $page_list;
-        }
         
         function successful_request_cancelled( $posted ) {
             global $woocommerce;
@@ -1289,41 +1262,57 @@ if( class_exists('WC_Payment_Gateway') ) {
             }
         }
 
-        function check_inicis_card_response() {
+        function check_inicis_payment_response() {
             if (!empty($_REQUEST)) {
                 header('HTTP/1.1 200 OK');
 
                 if (!empty($_REQUEST['type'])) {
-                    switch($_REQUEST['type']) {
+                    
+                    $return_type = explode(',', $_REQUEST['type']);
+
+                    if( $_REQUEST['txnid'] ) {
+                        $orderid = explode('_', $_REQUEST['txnid']);
+                    } else if( $_POST['P_NOTI'] ) {
+                        $notification = $this->decrypt_notification($_POST['P_NOTI']);
+                        $orderid = explode('_', $notification->txnid);
+                    } else if( $_REQUEST['P_OID'] ) {
+                        $orderid = explode('_', $_REQUEST['P_OID']);
+                    } else if( $_GET['oid'] ) {
+                        $orderid = explode('_', $_GET['oid']);
+                    } else if ( $return_type[1] ) {
+                        $temp_oid = explode('=', $return_type[1]);
+                        $orderid = explode('_', $temp_oid[1]);
+                    }
+                    
+                    if( !empty( $orderid ) ) {
+                        $orderid = (int)$orderid[0];
+                        $order = new WC_Order($orderid);
+                    }
+                    
+                    switch($return_type[0]) {
                         case "cancelled" :
                             $this->successful_request_cancelled($_POST);
-                            $redirect_url = ($this->redirect_page_id == "" || $this->redirect_page_id == 0) ? get_site_url() . "/" : get_permalink($this->redirect_page_id);
-                            wp_redirect($redirect_url);
+                            $this->inicis_redirect_page($order);
                             break;
                         case "pc" :
                             $this->successful_request_pc($_POST);
-                            $redirect_url = ($this->redirect_page_id == "" || $this->redirect_page_id == 0) ? get_site_url() . "/" : get_permalink($this->redirect_page_id);
-                            wp_redirect($redirect_url);
+                            $this->inicis_redirect_page($order);
                             break;
                         case "mobile_next" :
                             $this->successful_request_mobile_next($_POST);
-                            $redirect_url = ($this->redirect_page_id == "" || $this->redirect_page_id == 0) ? get_site_url() . "/" : get_permalink($this->redirect_page_id);
-                            wp_redirect($redirect_url);
+                            $this->inicis_redirect_page($order);
                             break;
                         case "mobile_noti" :
                             $this->successful_request_mobile_noti($_POST);
-                            $redirect_url = ($this->redirect_page_id == "" || $this->redirect_page_id == 0) ? get_site_url() . "/" : get_permalink($this->redirect_page_id);
-                            wp_redirect($redirect_url);
+                            $this->inicis_redirect_page($order);
                             break;
                         case "mobile_return" :
                             $this->successful_request_mobile_return($_POST);
-                            $redirect_url = ($this->redirect_page_id == "" || $this->redirect_page_id == 0) ? get_site_url() . "/" : get_permalink($this->redirect_page_id);
-                            wp_redirect($redirect_url);
+                            $this->inicis_redirect_page($order);
                             break;
                         case "cancel_payment" :
                             do_action("valid-inicis-request_cancel_payment", $_POST);
-                            $redirect_url = ($this->redirect_page_id == "" || $this->redirect_page_id == 0) ? get_site_url() . "/" : get_permalink($this->redirect_page_id);
-                            wp_redirect($redirect_url);
+                            $this->inicis_redirect_page($order);
                             break;
                         default :
                             wp_die( __( '결제 요청 실패 : 관리자에게 문의하세요!', 'inicis_payment' ) );
@@ -1335,6 +1324,30 @@ if( class_exists('WC_Payment_Gateway') ) {
             } else {
                 wp_die( __( '결제 요청 실패 : 관리자에게 문의하세요!', 'inicis_payment' ) );
             }
+        }
+        
+        function inicis_redirect_page($order) {
+            if ( version_compare( WOOCOMMERCE_VERSION, '2.1.0', '>=') ) {
+                if( isset( $order ) && !empty( $order ) ) {
+                    wp_redirect( $order->get_checkout_order_received_url() );
+                } else {
+                    $tmp_myaccount_pid = get_option( 'woocommerce_myaccount_page_id', true );
+                    if ( empty( $tmp_myaccount_pid ) ) {
+                        $myaccount_page = home_url();
+                    } else {
+                        $myaccount_page = get_permalink( get_option( 'woocommerce_myaccount_page_id', true ) );
+                    }
+                    wp_redirect( $myaccount_page );
+                }
+            } else {
+                $tmp_myaccount_pid = get_option( 'woocommerce_myaccount_page_id', true );
+                if ( empty( $tmp_myaccount_pid ) ) {
+                    $myaccount_page = home_url();
+                } else {
+                    $myaccount_page = get_permalink( get_option( 'woocommerce_myaccount_page_id', true ) );
+                }
+                wp_redirect( $myaccount_page );
+            }            
         }
         
         function inicis_noti_print_log($msg)

@@ -16,9 +16,9 @@
 			$flag_ssl = false;
 		}
 		$next_url 	= WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?type=mobile_next';
-		$return_url = WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?type=mobile_return&oid=' . $txnid ;
+		$return_url = WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?type=mobile_return,oid=' . $txnid ;
 		$noti_url 	= WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?type=mobile_noti';
-		$cancel_url = WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?type=mobile_return&oid=' . $txnid ;
+		$cancel_url = WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?type=mobile_return,oid=' . $txnid ;
 	?>
     <input type="hidden" name="P_NEXT_URL" value="<?php echo $next_url; ?>">
 	<input type="hidden" name="P_RETURN_URL" value="<?php echo $return_url; ?>">

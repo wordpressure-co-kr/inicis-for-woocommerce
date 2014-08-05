@@ -26,7 +26,6 @@ if (class_exists('WC_Payment_Gateway')) {
 				
 				$this->merchant_id = $this->settings['merchant_id'];
 				$this->merchant_pw = $this->settings['merchant_pw'];
-				$this->redirect_page_id = $this->settings['redirect_page_id'];
 
 				$this->init_form_fields();
 				$this->init_action();			
@@ -34,7 +33,7 @@ if (class_exists('WC_Payment_Gateway')) {
 	
 			function init_action() {
 
-				add_action('woocommerce_api_wc_gateway_' . $this->id, array($this, 'check_inicis_card_response'));
+				add_action('woocommerce_api_wc_gateway_' . $this->id, array($this, 'check_inicis_payment_response'));
 	
 				if (version_compare(WOOCOMMERCE_VERSION, '2.0.0', '>=')) {
 					add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'), 20);
@@ -45,7 +44,7 @@ if (class_exists('WC_Payment_Gateway')) {
                     add_action('woocommerce_update_options_payment_gateways', array($this, 'process_activate'), 10);
                     add_action('woocommerce_update_options_payment_gateways', array($this, 'process_activate_check'), 10);
 				}
-				
+				add_action( 'woocommerce_thankyou_' . $this->id, array( $this, 'thankyou_page' ) );
 				add_filter( 'woocommerce_payment_complete_order_status', array($this, 'woocommerce_payment_complete_order_status' ), 15, 2 );
 				add_filter( 'ifw_is_admin_refundable_' . $this->id, array( $this, 'ifw_is_admin_refundable' ), 10, 2 );
 				add_action( 'inicis_mypage_cancel_order_' . $this->id, array($this, 'inicis_mypage_cancel_order'), 20 );
@@ -53,6 +52,10 @@ if (class_exists('WC_Payment_Gateway')) {
 	        	add_action( 'wp_ajax_nopriv_payment_form_' . $this->id, array( &$this, 'wp_ajax_generate_payment_form' ) );				
 				add_action( 'wp_ajax_refund_request_' . $this->id, array( &$this, 'wp_ajax_refund_request' ) );
 			}
+
+            function thankyou_page() {
+                echo __('이니시스 카드결제로 결제되었습니다. 감사합니다.', 'inicis_payment');
+            }
 
 			function init_form_fields() {
 				parent::init_form_fields();
