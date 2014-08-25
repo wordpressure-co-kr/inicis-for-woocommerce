@@ -950,10 +950,7 @@ if( class_exists('WC_Payment_Gateway') ) {
         function successful_request_mobile_noti( $posted ) {
             global $woocommerce;
             
-            ob_start();
-            print_r($_REQUEST);
-            $this->inicis_noti_print_log(ob_get_contents());
-            ob_clean();
+            $this->inicis_noti_print_log(print_r($_REQUEST, TRUE));
             
             $PGIP = $_SERVER['REMOTE_ADDR'];
             if($PGIP == "211.219.96.165" || $PGIP == "118.129.210.25")

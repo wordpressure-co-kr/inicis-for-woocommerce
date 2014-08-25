@@ -33,7 +33,7 @@
     <input type=hidden name=hash value="<?php echo $hash; ?>">
     <input type=hidden name=txnid value="<?php echo $txnid; ?>">
     <input type=hidden name=Amount value="<?php echo $order->get_order_total(); ?>">
-    <input type=submit name="결제">'
+    <input type=submit name="결제">
 	<input type=hidden name=ini_encfield value="<?php echo $inipay->GetResult("encfield"); ?>">
     <input type=hidden name=ini_certid value="<?php echo $inipay->GetResult("certid"); ?>">
 </form>

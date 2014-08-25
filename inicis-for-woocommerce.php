@@ -3,7 +3,7 @@
 Plugin Name: INICIS for WooCommerce
 Plugin URI: http://www.codemshop.com
 Description: 엠샵에서 개발한 KG 이니시스의 워드프레스 우커머스 이용을 위한 결제 시스템 플러그인 입니다. KG INICIS Payment Gateway Plugin for Wordpress WooCommerce that developed by MShop.
-Version: 2.0.3
+Version: 2.0.4
 Author: CODEM(c)
 Author URI: http://www.codemshop.com
 */
@@ -20,7 +20,7 @@ if ( ! class_exists( 'INICIS_Payment_Gateway' ) ) {
         /**
          * @var string
          */
-        public $version = '2.0.3';
+        public $version = '2.0.4';
     
         /**
          * @var string
@@ -44,7 +44,6 @@ if ( ! class_exists( 'INICIS_Payment_Gateway' ) ) {
             $this->load_plugin_textdomain();
             
             add_action( 'init', array( $this, 'init' ), 0 );
-            add_action( 'init', array( $this, 'output_buffer' ), 0 );
             add_action( 'wp_head', array( $this, 'inicis_mypage_cancel_order' ), 0 );           
             add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
 
@@ -84,10 +83,6 @@ if ( ! class_exists( 'INICIS_Payment_Gateway' ) ) {
                 include_once( 'classes/class-wc-inicis-payment-'.$type.'.php' );
             }
         }
-        
-        function output_buffer() {
-            ob_start();
-        }       
         
         public function plugin_url() {
             if ( $this->plugin_url ) 
@@ -211,7 +206,16 @@ if ( ! class_exists( 'INICIS_Payment_Gateway' ) ) {
 		function inicis_ajaxurl() {
 			?>
 			<script type="text/javascript">
-			var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
+			<?php
+                $use_ssl = get_option('woocommerce_force_ssl_checkout');
+                if ($use_ssl == 'yes') {
+                    $html_ajax_url = admin_url('admin-ajax.php', 'https');
+                } else {
+                    $html_ajax_url = admin_url('admin-ajax.php', 'http');
+                }
+            ?>
+
+			var ajaxurl = '<?php echo $html_ajax_url; ?>';
 			</script>
 			<?php
 		}
