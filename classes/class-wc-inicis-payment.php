@@ -116,7 +116,7 @@ if( class_exists('WC_Payment_Gateway') ) {
         public function ifw_is_admin_refundable($refundable, $order) {
             $valid_order_status = $this->settings['possible_refund_status_for_admin'];
         
-            if( !empty($valid_order_status) && in_array($order->status, $valid_order_status) ){
+            if( !empty($valid_order_status) && $valid_order_status != '-1' && in_array($order->status, $valid_order_status) ){
                 return true;
             }else{
                 return false;
@@ -129,7 +129,7 @@ if( class_exists('WC_Payment_Gateway') ) {
             if($payment_method == $this->id) {
                 $valid_order_status = $this->settings['possible_refund_status_for_mypage'];
             
-                if( !empty($valid_order_status) && in_array($order->status, $valid_order_status) ){ 
+                if( !empty($valid_order_status) && $valid_order_status != '-1' && in_array($order->status, $valid_order_status) ){ 
                     
                     $cancel_endpoint = get_permalink( wc_get_page_id( 'cart' ) );
                     $myaccount_endpoint = get_permalink( wc_get_page_id( 'myaccount' ) );
@@ -148,7 +148,11 @@ if( class_exists('WC_Payment_Gateway') ) {
     
         public function validate_ifw_order_status_field($key) {
             $option_key = $this->id . '_' . $key;
-            return $_POST[$option_key];
+            if( empty($_POST[$option_key]) ) {
+                return "-1";
+            } else {
+                return $_POST[$option_key];    
+            }
         }
         
         public function validate_ifw_logo_upload_field($key) {
@@ -209,8 +213,10 @@ if( class_exists('WC_Payment_Gateway') ) {
             $shop_order_status = get_terms(array('shop_order_status'), array('hide_empty' => false));
             $selections = $this->settings[$key];
             
-            if( empty($selections) ){
+            if( empty($selections) ) {
                 $selections = $value['default'];
+            } else if( $selections == '-1' ) {
+                $selections = null;
             }
             
             ob_start();
@@ -224,7 +230,11 @@ if( class_exists('WC_Payment_Gateway') ) {
                         <?php
                             if ( $shop_order_status ) {
                                 foreach ( $shop_order_status as $status ) {
-                                    $selected = selected( in_array( $status->slug, $selections ), true, false );
+                                    if( !empty($selections) ) {
+                                        $selected = selected( in_array( $status->slug, $selections ), true, false );
+                                    } else {
+                                        $selected = '';
+                                    }
                                     echo '<option value="' . esc_attr( $status->slug ) . '" ' . $selected .'>' . $status->name . '</option>';
                                 }
                             }
@@ -704,7 +714,7 @@ if( class_exists('WC_Payment_Gateway') ) {
         function cancel_request($tid, $msg, $code="1"){
             global $woocommerce;
     
-            require($this->settings['libfolder']."/libs/INILib.php");
+            require_once($this->settings['libfolder']."/libs/INILib.php");
             $inipay = new INIpay50();
             
             $inipay->SetField("inipayhome", $this->settings['libfolder']);
@@ -735,7 +745,7 @@ if( class_exists('WC_Payment_Gateway') ) {
                 die('<span style="color:red;font-weight:bold;">' . __( '에러 : 상점 키파일 설정에 문제가 있습니다. 사이트 관리자에게 문의하여 주십시오.', 'inicis_payment' ) . '</span>');
                 wc_add_notice( __( '상점 키파일 설정에 문제가 있습니다. 사이트 관리자에게 문의하여 주십시오.', 'inicis_payment' ), 'error' );
             }
-            require ($this->settings['libfolder'] . "/libs/INILib.php");
+            require_once ($this->settings['libfolder'] . "/libs/INILib.php");
             
             
             if(isset($_REQUEST['txnid']))
@@ -849,7 +859,7 @@ if( class_exists('WC_Payment_Gateway') ) {
                 die( __('<span style="color:red;font-weight:bold;">에러 : 상점 키파일 설정에 문제가 있습니다. 사이트 관리자에게 문의하여 주십시오.</span>', 'inicis_payment') );
                 wc_add_notice( __( '상점 키파일 설정에 문제가 있습니다. 사이트 관리자에게 문의하여 주십시오.', 'inicis_payment' ), 'error' );
             }
-            require ($this->settings['libfolder'] . "/libs/INImx.php");
+            require_once ($this->settings['libfolder'] . "/libs/INImx.php");
             
             $notification = $this->decrypt_notification($_POST['P_NOTI']);
             if( empty($notification) ){
@@ -1165,7 +1175,7 @@ if( class_exists('WC_Payment_Gateway') ) {
             }
             
             try{
-                require ($this->settings['libfolder'] . "/libs/INILib.php");
+                require_once ($this->settings['libfolder'] . "/libs/INILib.php");
             }catch (Exception $e) {
                 wp_send_json_error( __( '결제오류 : 결제 모듈을 불러올 수 없습니다. 사이트 관리자에게 문의하여 주십시오.', 'inicis_payment') . ' [' . $e->getMessage() . ']');
             }
@@ -1233,7 +1243,7 @@ if( class_exists('WC_Payment_Gateway') ) {
         function successful_request_cancelled( $posted ) {
             global $woocommerce;
     
-            require($this->settings['libfolder']."/libs/INILib.php");
+            require_once($this->settings['libfolder']."/libs/INILib.php");
             $inipay = new INIpay50();
             
             $inipay->SetField("inipayhome", $_REQUEST['home']);
