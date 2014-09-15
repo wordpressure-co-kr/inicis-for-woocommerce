@@ -38,7 +38,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 * PG 서비스 신청 지원(PG Service Application Support) : http://www.codemshop.com
 
 = 설치 영상 =
-[youtube http://youtu.be/u22OAROS08M]
+[youtube http://www.youtube.com/watch?v=u22OAROS08M]
 
 == Installation ==
 
