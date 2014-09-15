@@ -10,15 +10,28 @@
 	<input type="hidden" name="P_MID" value="<?php echo $this->merchant_id; ?>">
 
 	<?php
-		if ($use_ssl == 'yes'){
-			$flag_ssl = true;
+		if (defined('ICL_LANGUAGE_CODE')) {
+			$lang_code = ICL_LANGUAGE_CODE;
+			if ($use_ssl == 'yes'){
+				$flag_ssl = true;
+			} else {
+				$flag_ssl = false;
+			}
+			$next_url 	= WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?lang='.$lang_code.'&type=mobile_next';
+			$return_url = WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?lang='.$lang_code.'&type=mobile_return,oid=' . $txnid ;
+			$noti_url 	= WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?lang='.$lang_code.'&type=mobile_noti';
+			$cancel_url = WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?land='.$lang_code.'&type=mobile_return,oid=' . $txnid ;
 		} else {
-			$flag_ssl = false;
+			if ($use_ssl == 'yes'){
+				$flag_ssl = true;
+			} else {
+				$flag_ssl = false;
+			}
+			$next_url 	= WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?type=mobile_next';
+			$return_url = WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?type=mobile_return,oid=' . $txnid ;
+			$noti_url 	= WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?type=mobile_noti';
+			$cancel_url = WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?type=mobile_return,oid=' . $txnid ;
 		}
-		$next_url 	= WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?type=mobile_next';
-		$return_url = WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?type=mobile_return,oid=' . $txnid ;
-		$noti_url 	= WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?type=mobile_noti';
-		$cancel_url = WC()->api_request_url('WC_Gateway_Inicis_Card', $flag_ssl) . '?type=mobile_return,oid=' . $txnid ;
 	?>
     <input type="hidden" name="P_NEXT_URL" value="<?php echo $next_url; ?>">
 	<input type="hidden" name="P_RETURN_URL" value="<?php echo $return_url; ?>">

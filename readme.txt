@@ -2,9 +2,9 @@
 Contributors: CODEM(c), CodeMShop, MShop, Inicis
 Donate link: http://www.codemshop.com 
 Tags: WooCommerce, eCommerce, Inicis, Payment, Gateway, PG, KG, KGINICIS, wordpress, MShop, CodeMStory, CodeMShop, CODEM(c), 이니시스, 우커머스, 결제, 코드엠, 엠샵
-Requires at least: 3.9.1
-Tested up to: 3.9.1
-Stable tag: 2.0.5
+Requires at least: 4.0
+Tested up to: 4.0
+Stable tag: 2.0.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -37,11 +37,15 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 * PG 서비스 신청 지원(PG Service Application Support) : http://www.codemshop.com
 
+= 설치 영상 =
+[youtube http://youtu.be/u22OAROS08M]
+
 == Installation ==
 
 = 사용 가능 환경(Requirements) =
 
-* 워드프레스 3.9.1 또는 최신 버전 (Wordpress 3.9.1 or later)
+* 워드프레스 4.0 또는 최신 버전 (Wordpress 4.0 or later)
+* 우커머스 2.2 또는 최신 버전 (WooCommerce 2.2 or later)
 * PHP 5.2.4 또는 최신 버전 (PHP 5.2.4 or later)
 * PHP 확장(Extension): OpenSSL, LibXML, mcrypt, socket 설치필요 (--with-openssl, --with-mcrypt, --enable-sockets)
 * MySQL 5.0 또는 최신 버전 (MySQL 5.0 or later)
@@ -88,6 +92,14 @@ you may contact to us by sending email to support@codemstory.com or feel free to
 5. 모바일/스마트폰 결제 동작 화면 / Mobile Payment Working Screen
 
 == Changelog ==
+
+= 2.0.6 - 2014/09/15 =
+* Wordpress 4.0 & WooCommerce 2.2 지원
+  Support Wordpress 4.0 and WooCommerce 2.2 
+* WPML 지원(Order Received) 처리 추가
+  Support WPML for Order Received process. 
+* 환불 처리 스크립트 수정
+  Order Refund Script Fix.
 
 = 2.0.5 - 2014/08/28 =
 * '사용자/관리자 주문취소 가능 상태' 옵션 수정

@@ -6,7 +6,31 @@ if( class_exists('WC_Payment_Gateway') ) {
     class WC_Gateway_Inicis extends WC_Payment_Gateway{
         public function __construct(){
             add_filter( 'woocommerce_my_account_my_orders_actions',  array($this, 'woocommerce_my_account_my_orders_actions'), 10, 2 );
+			add_filter( 'woocommerce_get_checkout_order_received_url',  array($this, 'woocommerce_get_checkout_order_received_url'), 99, 2 );
         }
+		
+		function woocommerce_get_checkout_order_received_url($order_received_url, $order_class) {
+
+			if (defined('ICL_LANGUAGE_CODE')) {
+				$checkout_pid = wc_get_page_id( 'checkout' ); 
+				if( !empty($_REQUEST['lang']) ) {
+					if(function_exists('icl_object_id')) {
+						$checkout_pid = icl_object_id($checkout_pid, 'page', true, $_REQUEST['lang']);
+					} 
+				}
+				$order_received_url = wc_get_endpoint_url( 'order-received', $order_class->id, get_permalink( $checkout_pid ) );
+		
+				if ( 'yes' == get_option( 'woocommerce_force_ssl_checkout' ) || is_ssl() ) {
+					$order_received_url = str_replace( 'http:', 'https:', $order_received_url );
+				}
+		
+				$order_received_url = add_query_arg( 'key', $order_class->order_key, $order_received_url );
+				return $order_received_url;
+				
+			} else {
+				return $order_received_url;
+			}
+		}
         
         function get_payment_description( $paymethod ) {
             switch($paymethod){
@@ -206,11 +230,25 @@ if( class_exists('WC_Payment_Gateway') ) {
                     return false;
                 }   
             }
-        }      
-        
+        }
+      
+        public function clean_status($arr_status) {
+			if( !empty($arr_status) ) {
+				$reoder = array();
+				foreach($arr_status as $status => $status_name) {
+					$status = 'wc-' === substr( $status, 0, 3 ) ? substr( $status, 3 ) : $status;
+					$reoder[$status] = $status_name;
+				}
+				return $reoder;
+			} else {
+				return $arr_status;
+			}
+			
+        }
+		
         public function generate_ifw_order_status_html($key, $value) {
             $option_key = $this->id . '_' . $key;
-            $shop_order_status = get_terms(array('shop_order_status'), array('hide_empty' => false));
+			$shop_order_status = $this->clean_status(wc_get_order_statuses());			
             $selections = $this->settings[$key];
             
             if( empty($selections) ) {
@@ -229,13 +267,13 @@ if( class_exists('WC_Payment_Gateway') ) {
                     <select multiple="multiple" name="<?php echo esc_attr( $option_key ); ?>[]" style="width:350px" data-placeholder="<?php _e( '주문 상태를 선택하세요.', 'inicis_payment' ); ?>" title="<?php _e( 'Order Status', 'inicis_payment' ); ?>" class="chosen_select">
                         <?php
                             if ( $shop_order_status ) {
-                                foreach ( $shop_order_status as $status ) {
+                            	foreach ( $shop_order_status as $status => $status_name ) {
                                     if( !empty($selections) ) {
-                                        $selected = selected( in_array( $status->slug, $selections ), true, false );
+                                        $selected = selected( in_array( $status, $selections ), true, false );
                                     } else {
                                         $selected = '';
                                     }
-                                    echo '<option value="' . esc_attr( $status->slug ) . '" ' . $selected .'>' . $status->name . '</option>';
+                                    echo '<option value="' . esc_attr( $status ) . '" ' . $selected .'>' . $status_name . '</option>';
                                 }
                             }
                         ?>
@@ -690,11 +728,11 @@ if( class_exists('WC_Payment_Gateway') ) {
         }       
 
         function get_order_status_list($except_list) {
-            $shop_order_status = get_terms(array('shop_order_status'), array('hide_empty' => false));
+            $shop_order_status = $this->clean_status(wc_get_order_statuses());
 
             $reorder = array();
-            foreach ($shop_order_status as $key => $value) {
-                $reorder[$value->slug] = $value->name;
+            foreach ($shop_order_status as $status => $status_name) {
+                $reorder[$status] = $status_name;
             }
 
             foreach ($except_list as $val) {

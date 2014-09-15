@@ -1,14 +1,28 @@
 <?php
-	if ($use_ssl == 'yes') {
-		?>
-			<form name=ini method=post action="<?php echo untrailingslashit( WC()->api_request_url('WC_Gateway_Inicis_Card?type=pc', true)); ?>" onSubmit="return pay(this)">
-		<?php
+	if (defined('ICL_LANGUAGE_CODE')) {
+		$lang_code = ICL_LANGUAGE_CODE;
+
+		if ($use_ssl == 'yes') {
+			?>
+				<form name=ini method=post action="<?php echo untrailingslashit( WC()->api_request_url('WC_Gateway_Inicis_Card?type=pc&lang=' . $lang_code, true)); ?>" onSubmit="return pay(this)">
+			<?php
+		} else {
+			?>
+				<form name=ini method=post action="<?php echo untrailingslashit( WC()->api_request_url('WC_Gateway_Inicis_Card?type=pc&lang=' . $lang_code, false)); ?>" onSubmit="return pay(this)">
+			<?php
+		}
 	} else {
-		?>
-			<form name=ini method=post action="<?php echo untrailingslashit( WC()->api_request_url('WC_Gateway_Inicis_Card?type=pc', false)); ?>" onSubmit="return pay(this)">
-		<?php
-	}
-	?>
+		if ($use_ssl == 'yes') {
+			?>
+				<form name=ini method=post action="<?php echo untrailingslashit( WC()->api_request_url('WC_Gateway_Inicis_Card?type=pc', true)); ?>" onSubmit="return pay(this)">
+			<?php
+		} else {
+			?>
+				<form name=ini method=post action="<?php echo untrailingslashit( WC()->api_request_url('WC_Gateway_Inicis_Card?type=pc', false)); ?>" onSubmit="return pay(this)">
+			<?php
+		}
+	} ?>
+	
     <input type="hidden" name="goodname" size=20 value="<?php echo $productinfo; ?>" />
     <input type="hidden" name="oid" size=40 value="<?php echo $txnid; ?>" />
     <input type="hidden" name="buyername" size=20 value="<?php echo $order->billing_last_name . $order->billing_first_name; ?>" />
