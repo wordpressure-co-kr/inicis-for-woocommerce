@@ -1,7 +1,7 @@
 <form id="form1" name="ini" method="post" action="" accept-charset="EUC-KR">
 	<input type="hidden" name="inipaymobile_type" id="select" value="web"/>
 	<input type="hidden" name="P_OID" value="<?php echo $txnid; ?>"/>
-	<input type="hidden" name="P_GOODS" value="<?php echo $productinfo; ?>"/>
+	<input type="hidden" name="P_GOODS" value="<?php echo esc_attr($productinfo); ?>"/>
 	<input type="hidden" name="P_AMT" value="<?php echo $order->get_order_total(); ?>"/>
 	<input type="hidden" name="P_UNAME" value="<?php echo $order->billing_last_name . ' ' . $order->billing_first_name; ?>"/>
 	<input type="hidden" name="P_MNAME" value="<?php echo get_bloginfo('name'); ?>"/>

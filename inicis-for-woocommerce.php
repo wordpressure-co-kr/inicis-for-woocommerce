@@ -3,7 +3,7 @@
 Plugin Name: INICIS for WooCommerce
 Plugin URI: http://www.codemshop.com
 Description: 엠샵에서 개발한 KG 이니시스의 워드프레스 우커머스 이용을 위한 결제 시스템 플러그인 입니다. KG INICIS Payment Gateway Plugin for Wordpress WooCommerce that developed by MShop.
-Version: 2.0.7
+Version: 2.0.8
 Author: CODEM(c)
 Author URI: http://www.codemshop.com
 */
@@ -20,7 +20,7 @@ if ( ! class_exists( 'INICIS_Payment_Gateway' ) ) {
         /**
          * @var string
          */
-        public $version = '2.0.7';
+        public $version = '2.0.8';
     
         /**
          * @var string
@@ -162,7 +162,7 @@ if ( ! class_exists( 'INICIS_Payment_Gateway' ) ) {
         
         function inicis_mypage_cancel_order(){
             if( is_page( 'checkout' ) ) {
-				$use_ssl = get_option('woocommerce_force_ssl_checkout');
+                $use_ssl = get_option('woocommerce_force_ssl_checkout');
                 if ($use_ssl == 'yes') {
                     $secunissl_cross = 'https://plugin.inicis.com/pay61_secunissl_cross.js';
                 } else {
