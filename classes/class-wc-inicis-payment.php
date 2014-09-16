@@ -243,12 +243,17 @@ if( class_exists('WC_Payment_Gateway') ) {
 			} else {
 				return $arr_status;
 			}
-			
         }
 		
         public function generate_ifw_order_status_html($key, $value) {
             $option_key = $this->id . '_' . $key;
-			$shop_order_status = $this->clean_status(wc_get_order_statuses());			
+			
+			if(version_compare( WOOCOMMERCE_VERSION, '2.2.0', '>=' )) {
+				$shop_order_status = $this->clean_status(wc_get_order_statuses());	
+			} else {
+	            $shop_order_status = get_terms(array('shop_order_status'), array('hide_empty' => false));
+			}			
+						
             $selections = $this->settings[$key];
             
             if( empty($selections) ) {
@@ -267,14 +272,25 @@ if( class_exists('WC_Payment_Gateway') ) {
                     <select multiple="multiple" name="<?php echo esc_attr( $option_key ); ?>[]" style="width:350px" data-placeholder="<?php _e( '주문 상태를 선택하세요.', 'inicis_payment' ); ?>" title="<?php _e( 'Order Status', 'inicis_payment' ); ?>" class="chosen_select">
                         <?php
                             if ( $shop_order_status ) {
-                            	foreach ( $shop_order_status as $status => $status_name ) {
-                                    if( !empty($selections) ) {
-                                        $selected = selected( in_array( $status, $selections ), true, false );
-                                    } else {
-                                        $selected = '';
-                                    }
-                                    echo '<option value="' . esc_attr( $status ) . '" ' . $selected .'>' . $status_name . '</option>';
-                                }
+								if(version_compare( WOOCOMMERCE_VERSION, '2.2.0', '>=' )) {
+	                            	foreach ( $shop_order_status as $status => $status_name ) {
+	                                    if( !empty($selections) ) {
+	                                        $selected = selected( in_array( $status, $selections ), true, false );
+	                                    } else {
+	                                        $selected = '';
+	                                    }
+	                                    echo '<option value="' . esc_attr( $status ) . '" ' . $selected .'>' . $status_name . '</option>';
+	                                }									
+								} else {
+	                                foreach ( $shop_order_status as $status ) {
+	                                    if( !empty($selections) ) {
+	                                        $selected = selected( in_array( $status->slug, $selections ), true, false );
+	                                    } else {
+	                                        $selected = '';
+	                                    }
+	                                    echo '<option value="' . esc_attr( $status->slug ) . '" ' . $selected .'>' . $status->name . '</option>';
+	                                }									
+								}
                             }
                         ?>
                     </select><br>
@@ -285,7 +301,6 @@ if( class_exists('WC_Payment_Gateway') ) {
         }
 
         public function generate_ifw_keyfile_upload_html($key, $value) {
-            
             ob_start();
             ?><tr valign="top">
                 <th scope="row" class="titledesc">
@@ -728,18 +743,35 @@ if( class_exists('WC_Payment_Gateway') ) {
         }       
 
         function get_order_status_list($except_list) {
-            $shop_order_status = $this->clean_status(wc_get_order_statuses());
 
-            $reorder = array();
-            foreach ($shop_order_status as $status => $status_name) {
-                $reorder[$status] = $status_name;
-            }
-
-            foreach ($except_list as $val) {
-                unset($reorder[$val]);
-            }
-            
-            return $reorder;
+            if(version_compare( WOOCOMMERCE_VERSION, '2.2.0', '>=' )) {
+	            $shop_order_status = $this->clean_status(wc_get_order_statuses());
+	
+	            $reorder = array();
+	            foreach ($shop_order_status as $status => $status_name) {
+	                $reorder[$status] = $status_name;
+	            }
+	
+	            foreach ($except_list as $val) {
+	                unset($reorder[$val]);
+	            }
+	            
+	            return $reorder;
+			} else {
+				
+	            $shop_order_status = get_terms(array('shop_order_status'), array('hide_empty' => false));
+	
+	            $reorder = array();
+	            foreach ($shop_order_status as $key => $value) {
+	                $reorder[$value->slug] = $value->name;
+	            }
+	
+	            foreach ($except_list as $val) {
+	                unset($reorder[$val]);
+	            }
+	            
+	            return $reorder;				
+			} 
         }
         
         function is_valid_for_use() {

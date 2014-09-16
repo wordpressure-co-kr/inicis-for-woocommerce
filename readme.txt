@@ -4,7 +4,7 @@ Donate link: http://www.codemshop.com
 Tags: WooCommerce, eCommerce, Inicis, Payment, Gateway, PG, KG, KGINICIS, wordpress, MShop, CodeMStory, CodeMShop, CODEM(c), 이니시스, 우커머스, 결제, 코드엠, 엠샵
 Requires at least: 4.0
 Tested up to: 4.0
-Stable tag: 2.0.6
+Stable tag: 2.0.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -92,6 +92,10 @@ you may contact to us by sending email to support@codemstory.com or feel free to
 5. 모바일/스마트폰 결제 동작 화면 / Mobile Payment Working Screen
 
 == Changelog ==
+
+= 2.0.7 - 2014/09/16 =
+* 구버전 호환코드 추가
+  Old version Support code added.
 
 = 2.0.6 - 2014/09/15 =
 * Wordpress 4.0 & WooCommerce 2.2 지원
@@ -194,3 +198,6 @@ you may contact to us by sending email to support@codemstory.com or feel free to
 주의사항! 1.0.x 버전 사용자 분들은 업그레이드시에 키파일과 로그파일들이 삭제되오니 필히 백업 후에 업데이트를 진행하시기 바랍니다. 
 Warning! 1.0.x Version Users, please backup keyfile and log files before update. because, if you keep going update, it remove inside keyfile and log files.
 
+= 2.0.6 =
+주의사항! 워드프레스 4.0과 우커머스 2.2 버전 사용자가 아닌 경우 업데이트를 진행하지 마시기 바랍니다. 
+Warning! If you are using wordpress 4.0 below and woocommerce 2.2 below, please do not update. 
