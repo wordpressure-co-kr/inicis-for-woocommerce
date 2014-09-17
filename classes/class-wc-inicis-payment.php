@@ -730,7 +730,7 @@ if( class_exists('WC_Payment_Gateway') ) {
                 $result = array();
                 foreach ($dirs as $val) {
                     $tmpmid = substr( basename($val), 0, 3 );
-                    if( ($tmpmid == base64_decode("SU5J") || $tmpmid == base64_decode("Q09E") || $mid == base64_decode("Y29kZW1zdG9yeQ==") ) )  {
+                    if( ($tmpmid == base64_decode("SU5J") || $tmpmid == base64_decode("Q09E") || $tmpmid == base64_decode("Y29k") ) )  {
                         if ( file_exists( $val . '/keypass.enc' )  && file_exists( $val . '/mcert.pem' ) && file_exists( $val . '/mpriv.pem' ) && file_exists( $val . '/readme.txt' )) {
                             $result[basename($val)] = basename($val);    
                         }

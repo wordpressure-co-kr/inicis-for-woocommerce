@@ -4,7 +4,7 @@ Donate link: http://www.codemshop.com
 Tags: WooCommerce, eCommerce, Inicis, Payment, Gateway, PG, KG, KGINICIS, wordpress, MShop, CodeMStory, CodeMShop, CODEM(c), 이니시스, 우커머스, 결제, 코드엠, 엠샵
 Requires at least: 4.0
 Tested up to: 4.0
-Stable tag: 2.0.8
+Stable tag: 2.0.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -92,6 +92,10 @@ you may contact to us by sending email to support@codemstory.com or feel free to
 5. 모바일/스마트폰 결제 동작 화면 / Mobile Payment Working Screen
 
 == Changelog ==
+
+= 2.0.9 - 2014/09/17 =
+* 환불 처리 스크립트 수정
+  Order Refund Script Fix.
 
 = 2.0.8 - 2014/09/16 =
 * 상품명 특수 기호 필터링 처리 추가
